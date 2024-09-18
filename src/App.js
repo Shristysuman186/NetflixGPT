@@ -1,8 +1,18 @@
+import Body from "./components/Body";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Browse from './components/Browse';
+import Login from './components/Login';
 
 function App() {
   return (
     <div className="App">
-      <h1 className="font-bold text-green-600 text-xl">Netflix GPT</h1>
+      <Body/>
+      <Router>
+        <Routes>
+            <Route path="/" element={<Login/>}/>
+            <Route path="/browse" element={<Browse/>}/>
+        </Routes>
+    </Router>
     </div>
   );
 }
