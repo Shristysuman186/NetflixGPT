@@ -1,6 +1,8 @@
 const Browse = () => {
   return (
-    <div></div>
+    <div>
+        Browse
+    </div>
   )
 }
 

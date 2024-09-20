@@ -1,11 +1,17 @@
 import { useRef, useState } from "react"
 import { validate } from "../utils/validate";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Body from "./Body";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
 const [isSignedIn, setIsSignedIn] = useState(true);
 const [errMessage, setErrorMessage] = useState(null);
+const dispatch = useDispatch();
+const navigate = useNavigate();
 
     const email = useRef(null);
     const password = useRef(null);
@@ -30,7 +36,16 @@ const [errMessage, setErrorMessage] = useState(null);
 createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
   .then((userCredential) => {
     const user = userCredential.user;
+
+    updateProfile(auth.currentUser, {
+        displayName: name.current.value
+      }).then(() => {
+        const {uid, displayName, email} = user;
+        dispatch(addUser({uid: uid, displayName: displayName, email: email}));
+        navigate("/browse");
+      })
     console.log(user);
+        
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -42,6 +57,8 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
   .then((userCredential) => {
     const user = userCredential.user;
     console.log(user);
+        navigate("/browse");
+
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -51,6 +68,7 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
         }
     }
   return (
+    <div><Body/>
     <div className="relative z-20 w-4/12 bg-black bg-opacity-80 top-36 mx-auto py-8 px-16 text-white">
         <div className="text-3xl font-bold mb-4">{isSignedIn ? "Sign In" : "Sign Up"}</div>
         <form onSubmit={(e) => e.preventDefault()}>
@@ -69,6 +87,7 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
             </div>
         </form>
         <div className="cursor-pointer my-4" onClick={signInHandler}>{isSignedIn ?  <>New to Netflix? <span className="font-bold">Sign up now</span>.</> : <>Already a user? <span className="font-bold">Sign in now</span>.</>}</div>
+    </div>
     </div>
   )
 }
