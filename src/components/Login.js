@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { validate } from "../utils/validate";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +50,7 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    setErrorMessage(errorCode + " - " + errMessage);
+    setErrorMessage(errorCode + " - " + errorMessage);
   });
         } else {
             signInWithEmailAndPassword(auth, email.current.value, password.current.value)
@@ -63,7 +63,7 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
-    setErrorMessage(errorCode + " - " + errMessage);
+    setErrorMessage(errorCode + " - " + errorMessage);
   });
         }
     }

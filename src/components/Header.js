@@ -20,7 +20,7 @@ const Header = () => {
                 dispatch(removeUser());
             }
           });
-    },[]);
+    },[dispatch]);
       
 const signOutHandler = () => {
     signOut(auth).then(() => {
